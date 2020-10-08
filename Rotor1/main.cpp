@@ -44,6 +44,9 @@ int plugBoard(int letter) {
 }
 
 int rightRotor(int letter) {
+	if(rightrot == 26) {
+		rightrot = 0;
+	}
 	int newlet = (letter + rightrot + rrotset - 65) % 26;
 	if(rrottype == 1) {
 		return rotor1[newlet];
