@@ -30,14 +30,21 @@ void plugBoardSettings() {
 	int first = 0;
 	int second = 0;
 	int count = 1;
+
+	//Gets plugboard settings
 	cout << "Welcome to the Plugboard!" << endl;
 	for(int i = 0; i < 26; i++) {
-		int set = 65 + i;
+
+		//If the setting has not already been made
 		if(pbset[first] == 0) {
 			int setting = 65 + first;
 			char letter;
+
+			//Gets the desired letter setting
 			cout << "Please enter a setting for " << (char)setting << ": ";
 			cin >> letter;
+
+			//Checks for user stupidity
 			for(int j = 0; j < 26; j++) {
 				while (toupper(letter) == pbset[j]) {
 					cout << "Letter was already entered. Try again: ";
@@ -59,24 +66,30 @@ void rotorSettings() {
 	char rrotchar;
 	char rrottypechar;
 
+	//Get the desired letter setting for the right rotor
 	cout << "Please enter a letter setting for the right rotor: ";
         cin >> rrotchar;
-
+	
+	//Check user stupidity
         while(toupper(rrotchar) < 65 || toupper(rrotchar) > 90) {
                 cout << "This is not a letter. Try again: ";
                 cin >> rrotchar;
         }
 
+	//Get the desired rotor setting for the right rotor
         cout << "Please enter a rotor setting for the right rotor (1,2,3): ";
         cin >> rrottypechar;
 	
+	//Check user stupidity
         while((int)rrottypechar < 49 || (int)rrottypechar > 51) {
                 cout << "This is not an option. Try again: ";
                 cin >> rrottypechar;
         }
 
+	//Assign the rotor type (I, II, III)
 	rrottype = (int)rrottypechar - 48;
 
+	//Assign rotor letter setting
         rrotset = toupper(rrotchar) - 65;
 
 }
@@ -91,10 +104,15 @@ int plugBoard(int letter) {
 //Sends the string through the right rotor
 int rightRotor(int letter) {
 
+	//Reset stepping at 26th step
 	if(rightrot == 26) {
 		rightrot = 0;
 	}
+
+	//Encrypt character based on letter setting
 	int newlet = (letter + rightrot + rrotset - 65) % 26;
+
+	//Encrypt character based on rotor setting
 	if(rrottype == 1) {
 		return rotor1[newlet];
 	}
