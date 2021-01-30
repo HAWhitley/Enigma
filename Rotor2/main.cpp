@@ -28,7 +28,7 @@ int rrotset;
 int mrotset;
 
 //Stepping mechanism for right rotor
-int rightrot = 0;
+int rightrot = 1;
 
 //Stepping mechanism for middle rotor
 int middlerot = 0;
@@ -169,9 +169,13 @@ int middleRotor(int letter) {
                 middlerot = 0;
         }
 
-        //Encrypt character based on letter setting
-        int newlet = (letter + middlerot + mrotset - 65) % 26;
+	int offset = letter - rightrot - rrotset - 65;
+	if(offset < 0) {
+		offset = 26 + offset;
+	}
 
+	int newlet = (offset + middlerot + mrotset) % 26;
+	
         //Encrypt character based on rotor setting
         if(mrottype == 1) {
                 return rotor1[newlet];

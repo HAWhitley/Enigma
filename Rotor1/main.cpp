@@ -22,7 +22,7 @@ int rrottype;
 int rrotset;
 
 //Stepping mechanism for right rotor
-int rightrot = 0;
+int rightrot = 1;
 
 //Determines the plugboard settings
 void plugBoardSettings() {
