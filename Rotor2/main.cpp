@@ -19,12 +19,12 @@ int rotor3[] = {66, 68, 70, 72, 74, 76, 67, 80, 82, 84, 88, 86, 90, 78, 89, 69, 
 int rrottype;
 
 //Chosen rotor for middle rotor (I, II, III)
-int mrottype;
+int mrottype;;
 
 //Chosen letter for right rotor
 int rrotset;
 
-//Chosen letter for right rotor
+//Chosen letter for middle rotor
 int mrotset;
 
 //Stepping mechanism for right rotor
@@ -72,8 +72,8 @@ void plugBoardSettings() {
 //Determines the rotor settings
 void rotorSettings() {
 
-	char rrotchar, mrotchar;
-	char rrottypechar, mrottypechar;
+	char rrotchar, mrotchar, lrotchar;
+	char rrottypechar, mrottypechar, lrottypechar;
 
 	//Get the desired letter setting for the right rotor
 	cout << "Please enter a letter setting for the right rotor: ";
@@ -140,7 +140,7 @@ int plugBoard(int letter) {
 int rightRotor(int letter) {
 
 	//Reset stepping at 26th step
-	if(rightrot == 26) {
+	if (rightrot == 26) {
 		rightrot = 0;
 		middlerot++;
 	}
@@ -165,17 +165,22 @@ int rightRotor(int letter) {
 int middleRotor(int letter) {
 
         //Reset stepping at 26th step
-        if(middlerot == 26) {
+	if(middlerot == 26) {
                 middlerot = 0;
         }
 
-	int offset = letter - rightrot - rrotset - 65;
-	if(offset < 0) {
-		offset = 26 + offset;
+        //Encrypt character based on letter setting
+        int offset = letter - rightrot - rrotset - 65;
+	if(offset < -26) {
+		offset = 52 + offset;
 	}
+        if(offset < 0 && offset >= -26) {
+                offset = 26 + offset;
+        }
 
-	int newlet = (offset + middlerot + mrotset) % 26;
-	
+        int newlet = (offset + middlerot + mrotset) % 26;
+
+
         //Encrypt character based on rotor setting
         if(mrottype == 1) {
                 return rotor1[newlet];

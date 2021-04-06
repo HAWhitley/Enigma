@@ -105,7 +105,7 @@ int plugBoard(int letter) {
 int rightRotor(int letter) {
 
 	//Reset stepping at 26th step
-	if(rightrot == 26) {
+	if (rightrot == 26) {
 		rightrot = 0;
 	}
 

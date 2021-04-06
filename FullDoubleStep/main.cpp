@@ -165,7 +165,7 @@ void rotorSettings() {
         mrotset = toupper(mrotchar) - 65;
 
 	//Assign rotor letter setting
-        lrotset = toupper(mrotchar) - 65;
+        lrotset = toupper(lrotchar) - 65;
 
 }
 
@@ -267,6 +267,7 @@ int leftRotor(int letter) {
 
         //Encrypt character based on letter setting
         int offset = letter - middlerot - mrotset - 65;
+
         if(offset < -26) {
                 offset = 52 + offset;
         }
@@ -361,6 +362,7 @@ int reverse(int letter) {
                 }
         }
 
+
 	int newmiddle = middleLetter - middlerot - mrotset + rightrot + rrotset;
         if (newmiddle < 39) {
                 newmiddle = 91 - 65 + 26 + newmiddle;
@@ -397,6 +399,7 @@ int reverse(int letter) {
                         }
                 }
         }
+
 
 	int newright = rightLetter - rightrot - rrotset;
 	if (newright < 39) {

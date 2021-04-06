@@ -163,7 +163,7 @@ void rotorSettings() {
         mrotset = toupper(mrotchar) - 65;
 
 	//Assign rotor letter setting
-        lrotset = toupper(mrotchar) - 65;
+        lrotset = toupper(lrotchar) - 65;
 
 }
 
@@ -178,7 +178,7 @@ int plugBoard(int letter) {
 int rightRotor(int letter) {
 
 	//Reset stepping at 26th step
-	if(rightrot == 26) {
+	if (rightrot == 26) {
 		rightrot = 0;
 		middlerot++;
 	}
@@ -203,18 +203,22 @@ int rightRotor(int letter) {
 int middleRotor(int letter) {
 
         //Reset stepping at 26th step
-        if(middlerot == 26) {
+	if(middlerot == 26) {
                 middlerot = 0;
 		leftrot++;
         }
 
         //Encrypt character based on letter setting
         int offset = letter - rightrot - rrotset - 65;
-        if(offset < 0) {
+	if(offset < -26) {
+		offset = 52 + offset;
+	}
+        if(offset < 0 && offset >= -26) {
                 offset = 26 + offset;
         }
 
         int newlet = (offset + middlerot + mrotset) % 26;
+
 
         //Encrypt character based on rotor setting
         if(mrottype == 1) {
@@ -239,7 +243,11 @@ int leftRotor(int letter) {
 
         //Encrypt character based on letter setting
         int offset = letter - middlerot - mrotset - 65;
-        if(offset < 0) {
+
+        if(offset < -26) {
+                offset = 52 + offset;
+        }
+        if(offset < 0 && offset >= -26) {
                 offset = 26 + offset;
         }
 
@@ -261,10 +269,18 @@ int leftRotor(int letter) {
 int reverse(int letter) {
 	int leftLetter, middleLetter, rightLetter;
 
+	int newLet = letter + leftrot + lrotset;
+        if(newLet > 90 && newLet <= 116) {
+                newLet = newLet - 91 + 65;
+        }
+        if(newLet > 116) {
+                newLet = newLet - 91 + 65 - 26;
+        }
+
 	//Reverse letter from left rotor
 	if(lrottype == 1) {
 		for(int i = 0; i < 26; i++) {
-			if(rotor1[i] == letter) {
+			if(rotor1[i] == newLet) {
 				leftLetter = i + 65;
 			}
 		}
@@ -284,16 +300,23 @@ int reverse(int letter) {
                 }
         }
 
+	int newleft = leftLetter - leftrot - lrotset + middlerot + mrotset;
+        if (newleft < 39) {
+                newleft = 91 - 65 + 26 + newleft;
+        }
+        if (newleft < 65 && newleft >= 39) {
+                newleft = 91 - 65 + newleft;
+        }
+        if (newleft > 90 && newleft <= 116) {
+                newleft = newleft - 91 + 65;
+        }
+        if (newleft > 116) {
+                newleft = newleft - 91 + 65 - 26;
+        }
+
 
 	//Reverse letter from middle rotor
 	if(mrottype == 1) {
-		int newleft = leftLetter - leftrot - lrotset + middlerot + mrotset;
-		if(newleft < 65) {
-			newleft = 91 - 65 +  newleft;
-		}
-		if(newleft > 90) {
-			newleft = newleft - 91 + 65;
-		}
                 for(int i = 0; i < 26; i++) {
                         if(rotor1[i] == newleft) {
                                 middleLetter = i + 65;
@@ -301,13 +324,6 @@ int reverse(int letter) {
                 }
         }
 	else if(mrottype == 2) {
-		int newleft = leftLetter - leftrot - lrotset + middlerot + mrotset;
-		if (newleft < 65) {
-			newleft = 91 - 65 + newleft;
-		}
-		if(newleft > 90) {
-			newleft = newleft - 91 + 65;
-		}
                 for(int i = 0; i < 26; i++) {
                         if(rotor2[i] == newleft) {
                                 middleLetter = i + 65;
@@ -315,13 +331,6 @@ int reverse(int letter) {
                 }
         }
 	else {
-		int newleft = leftLetter - leftrot - lrotset + middlerot + mrotset;
-		if (newleft < 65) {
-			newleft = 91 - 65 + newleft;
-		}
-		if (newleft > 90) {
-			newleft = newleft - 91 + 65;
-		}
 		for(int i = 0; i < 26; i++) {
                         if(rotor3[i] == newleft) {
                                 middleLetter = i + 65;
@@ -329,15 +338,23 @@ int reverse(int letter) {
                 }
         }
 
+
+	int newmiddle = middleLetter - middlerot - mrotset + rightrot + rrotset;
+        if (newmiddle < 39) {
+                newmiddle = 91 - 65 + 26 + newmiddle;
+        }
+        if (newmiddle < 65 && newmiddle >= 39) {
+                newmiddle = 91 - 65 + newmiddle;
+        }
+        if (newmiddle > 90 && newmiddle <= 116) {
+                newmiddle = newmiddle - 91 + 65;
+        }
+        if (newmiddle > 116) {
+                newmiddle = newmiddle - 91 + 65 - 26;
+        }
+
 	//Reverse letter from right rotor
 	if(rrottype == 1) {
-		int newmiddle = middleLetter - middlerot - mrotset + rightrot + rrotset;
-		if (newmiddle < 65) {
-			newmiddle = 91 - 65 + newmiddle;
-		}
-		if (newmiddle > 90) {
-			newmiddle = newmiddle - 91 + 65;
-		}
                 for(int i = 0; i < 26; i++) {
                         if(rotor1[i] == newmiddle) {
                                 rightLetter = i + 65;
@@ -345,13 +362,6 @@ int reverse(int letter) {
                 }
         }
 	else if(rrottype == 2) {
-		int newmiddle = middleLetter - middlerot - mrotset + rightrot + rrotset;
-		if (newmiddle < 65) {
-			newmiddle = 91 - 65 + newmiddle;
-		}
-		if (newmiddle > 90) {
-			newmiddle = newmiddle - 91 + 65;
-		}
                 for(int i = 0; i < 26; i++) {
                         if(rotor2[i] == newmiddle) {
                                 rightLetter = i + 65;
@@ -359,13 +369,6 @@ int reverse(int letter) {
                 }
         }
 	else {
-		int newmiddle = middleLetter - middlerot - mrotset + rightrot + rrotset;
-		if (newmiddle < 65) {
-			newmiddle = 91 - 65 + newmiddle;
-		}
-		if (newmiddle > 90) {
-			newmiddle = newmiddle - 91 + 65;
-		}
                 for(int i = 0; i < 26; i++) {
                         if(rotor3[i] == newmiddle) {
                                 rightLetter = i + 65;
@@ -373,10 +376,15 @@ int reverse(int letter) {
                 }
         }
 
+
 	int newright = rightLetter - rightrot - rrotset;
-	if (newright < 65) {
+	if (newright < 39) {
+		newright = 91 - 65 + 26 + newright;
+	}
+	if (newright >= 39 && newright < 65) {
 		newright = 91 - 65 + newright;
 	}
+
 
 	//Reverse letter from plugboard
 	return plugBoard(newright);
@@ -384,9 +392,15 @@ int reverse(int letter) {
 }
 
 int Reflector(int letter) {
-	int newlet = letter - 65;
+	//int newlet = letter - 65;
+	int offset = letter - leftrot - lrotset - 65;
+        if(offset < 0) {
+                offset = 26 + offset;
+        }
 
-	return reflector[newlet];
+        int newlet = (offset + leftrot + lrotset) % 26;
+
+	return reflector[offset];
 }
 
 //Encrypt the message

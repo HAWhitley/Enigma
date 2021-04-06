@@ -160,7 +160,7 @@ void rotorSettings() {
         mrotset = toupper(mrotchar) - 65;
 
 	//Assign rotor letter setting
-        lrotset = toupper(mrotchar) - 65;
+        lrotset = toupper(lrotchar) - 65;
 
 }
 
@@ -175,7 +175,7 @@ int plugBoard(int letter) {
 int rightRotor(int letter) {
 
 	//Reset stepping at 26th step
-	if(rightrot == 26) {
+	if (rightrot == 26) {
 		rightrot = 0;
 		middlerot++;
 	}
@@ -200,18 +200,22 @@ int rightRotor(int letter) {
 int middleRotor(int letter) {
 
         //Reset stepping at 26th step
-        if(middlerot == 26) {
+	if(middlerot == 26) {
                 middlerot = 0;
 		leftrot++;
         }
 
         //Encrypt character based on letter setting
         int offset = letter - rightrot - rrotset - 65;
-        if(offset < 0) {
+	if(offset < -26) {
+		offset = 52 + offset;
+	}
+        if(offset < 0 && offset >= -26) {
                 offset = 26 + offset;
         }
 
         int newlet = (offset + middlerot + mrotset) % 26;
+
 
         //Encrypt character based on rotor setting
         if(mrottype == 1) {
@@ -236,7 +240,11 @@ int leftRotor(int letter) {
 
         //Encrypt character based on letter setting
         int offset = letter - middlerot - mrotset - 65;
-        if(offset < 0) {
+
+        if(offset < -26) {
+                offset = 52 + offset;
+        }
+        if(offset < 0 && offset >= -26) {
                 offset = 26 + offset;
         }
 
