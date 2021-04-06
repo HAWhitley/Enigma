@@ -179,7 +179,7 @@ int plugBoard(int letter) {
 //Sends the string through the right rotor
 int rightRotor(int letter) {
 
-	//Reset stepping at 26th step
+	//Increase middle rotor at letter depending on rotor type
 	if(rrottype == 1 && (rightrot + rrotset) % 26 == 17) {
 		middlerot++;
 		prevRight = rightrot;
@@ -192,6 +192,8 @@ int rightRotor(int letter) {
                 middlerot++;
                 prevRight = rightrot;
         }
+
+	//Increase left rotor at 26th step of middle rotor, reset stepping
 	if (rightrot == 26) {
 		rightrot = 0;
 		middlerot++;
@@ -216,7 +218,7 @@ int rightRotor(int letter) {
 //Sends the string through the middle rotor
 int middleRotor(int letter) {
 
-        //Reset stepping at 26th step
+  	//Increase left rotor at letter depending on rotor type
 	int right = rightrot - prevRight;
 	if(mrottype == 1 && (middlerot + mrotset) % 26 == 17 && right == 0) {
 		leftrot++;
@@ -227,6 +229,8 @@ int middleRotor(int letter) {
 	if(mrottype == 3 && (middlerot + mrotset) % 26 == 21 && right == 0) {
                 leftrot++;
         }
+
+	//Increase left rotor at 26th step of middle rotor, reset stepping
 	if(middlerot == 26) {
                 middlerot = 0;
 		leftrot++;
@@ -290,6 +294,7 @@ int leftRotor(int letter) {
 
 }
 
+//Sends the string back through the rotors and the plugboard
 int reverse(int letter) {
 	int leftLetter, middleLetter, rightLetter;
 
@@ -415,8 +420,8 @@ int reverse(int letter) {
 
 }
 
+//Sends the string through the reflector
 int Reflector(int letter) {
-	//int newlet = letter - 65;
 	int offset = letter - leftrot - lrotset - 65;
         if(offset < 0) {
                 offset = 26 + offset;
